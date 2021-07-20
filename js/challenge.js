@@ -1,15 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let i = 0;
-    let likeCount = 0;
-    let li = document.createElement('li');
-    let likes = document.getElementsByClassName('likes');
-    let counter = document.getElementById('counter');
-    let minus = document.getElementById('minus');
-    let plus = document.getElementById('plus');
-    let heart = document.getElementById('heart');
-    let pause = document.getElementById('pause');
-
     // TIMER
+    let i = 0;
+    const counter = document.getElementById('counter');
+
     setTimeout(start, 1000);
     function start() {
         setInterval(timer, 1000);
@@ -20,25 +13,59 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // MINUS
+    const minus = document.getElementById('minus');
+
     minus.addEventListener("click", function () {
         counter.innerText = i - 1;
     })
 
     // PLUS
-    plus.addEventListener("click", function () {
-        counter.innerText = i + 1;
-    })
+    const plus = document.getElementById('plus');
 
     // HEART
+    const heart = document.getElementById('heart');
+    let likeCount = 0;
+    const likes = document.getElementsByClassName('likes');
+
     heart.addEventListener("click", function () {
+        let li = document.createElement('li');
         likeCount += 1;
-        // button.innerHTML = "Click me: " + count;
-        // li.appendElement(`${i} had been liked ${} time/s`);
-        likes.appendElement(li);
+        currentI = Number(i)
+        li.appendChild(document.createTextNode(`${currentI} had been liked ${likeCount} time/s`));
+        likes.appendChild(li);
     })
 
     // PAUSE
-    pause.addEventListener("click", function () {
-        counter.innerText = i;
+    const pause = document.getElementById('pause');
+
+    // COMMENTS
+    const list = document.getElementById('list');
+    let commentInput = document.getElementById('comment-input').value;
+    let commentForm = document.getElementById('comment-form');
+    const submit = document.getElementById('submit');
+
+    // document.getElementById('submit').addEventListener('click', function (ev) {
+    //     submit(ev);
+    // });
+
+    submit.addEventListener("click", function() {
+        let commentText, wrapDiv;
+        const wrapDiv = document.createElement('div');
+        wrapDiv.className = 'wrapper';
+        wrapDiv.style.marginLeft = 0;
+        commentText = document.getElementById('newComment').value;
+        document.getElementById('newComment').value = '';
+        textBox.innerHTML = commentText;
+        commentContainer.appendChild(wrapDiv);
+        // e.preventDefault();
+        // let comment = document.createElement('p');
+        // comment.appendChild(document.createTextNode(commentInput));
+        // list.appendChild(comment);
+        // document.getElementById('comment-input').value = "";
     })
+
+    // function addComment(ev) {
+
+    // }
 })
+
