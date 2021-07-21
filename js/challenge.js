@@ -1,71 +1,85 @@
 document.addEventListener("DOMContentLoaded", function () {
     // TIMER
-    let i = 0;
     const counter = document.getElementById('counter');
 
-    setTimeout(start, 1000);
-    function start() {
-        setInterval(timer, 1000);
+    function incrementCount() {
+        let counterValue = parseInt(counter.innerText);
+        counterValue++;
+        counter.innerText = counterValue;
     }
-    let timer = () => {
-        i++;
-        counter.innerText = i;
-    }
+
+    let timer = setInterval(incrementCount, 1000);
 
     // MINUS
     const minus = document.getElementById('minus');
-
-    minus.addEventListener("click", function () {
-        counter.innerText = i - 1;
-    })
+    minus.addEventListener("click", decrementCount)
+    function decrementCount() {
+        let counterValue = parseInt(counter.innerText);
+        counterValue--;
+        counter.innerText = counterValue;
+    }
 
     // PLUS
     const plus = document.getElementById('plus');
+    plus.addEventListener("click", incrementCount)
 
     // HEART
-    const heart = document.getElementById('heart');
-    let likeCount = 0;
-    const likes = document.getElementsByClassName('likes');
+    
+  const likeButton = document.querySelector('#heart')
+    const likeList = document.querySelector('.likes')
+    const likes = {}
 
-    heart.addEventListener("click", function () {
-        let li = document.createElement('li');
-        likeCount += 1;
-        currentI = Number(i)
-        li.appendChild(document.createTextNode(`${currentI} had been liked ${likeCount} time/s`));
-        likes.appendChild(li);
-    })
+
+    likeButton.addEventListener('click', increaseLike)
+
+    function increaseLike(event) {
+        const key = counter.innerText
+    
+        if (likes[key]) likes[key]++
+        else likes[key] = 1
+    
+        for (const key in likes) {
+          console.log(key)
+          let currentItem = document.querySelector(`#_${key}`)
+          if (currentItem) {
+            currentItem.innerText = `${key} has been liked ${likes[key]} time`
+          } else {
+            currentItem = document.createElement('li')
+            currentItem.id = `_${key}`
+    
+            currentItem.innerText = `${key} has been liked ${likes[key]} time`
+            likeList.append(currentItem)
+          }
+        }
+      }
 
     // PAUSE
     const pause = document.getElementById('pause');
+    pause.addEventListener("click", pauseCounter)
+    function pauseCounter(event) {
+        if (event.target.innerText === 'pause') {
+            clearInterval(timer)
+            event.target.innerText = 'resume'
+        } else {
+            timer = setInterval(incrementCount, 1000);
+            event.target.innerText = 'pause'
+
+        }
+    }
 
     // COMMENTS
     const list = document.getElementById('list');
-    let commentInput = document.getElementById('comment-input').value;
-    let commentForm = document.getElementById('comment-form');
+    let input = document.getElementById('comment-input');
+    let form = document.getElementById('comment-form');
     const submit = document.getElementById('submit');
+    form.addEventListener('submit', submitForm)
 
-    // document.getElementById('submit').addEventListener('click', function (ev) {
-    //     submit(ev);
-    // });
-
-    submit.addEventListener("click", function() {
-        let commentText, wrapDiv;
-        const wrapDiv = document.createElement('div');
-        wrapDiv.className = 'wrapper';
-        wrapDiv.style.marginLeft = 0;
-        commentText = document.getElementById('newComment').value;
-        document.getElementById('newComment').value = '';
-        textBox.innerHTML = commentText;
-        commentContainer.appendChild(wrapDiv);
-        // e.preventDefault();
-        // let comment = document.createElement('p');
-        // comment.appendChild(document.createTextNode(commentInput));
-        // list.appendChild(comment);
-        // document.getElementById('comment-input').value = "";
-    })
-
-    // function addComment(ev) {
-
-    // }
+    function submitForm(e) {
+        e.preventDefault();
+        const div = document.createElement('div')
+        div.innerText = input.value
+        list.append(div)
+        document.getElementById('comment-input').value = '';
+    }
 })
 
